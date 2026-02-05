@@ -1,10 +1,10 @@
 import Foundation
 
-struct MovieResponse: Decodable {
+public struct MovieResponse: Decodable {
     let results: [Movie]
 }
 
-struct Movie: Codable {
+public struct Movie: Codable {
     let id: Int
     let original_language: String
     let original_title: String
@@ -13,9 +13,9 @@ struct Movie: Codable {
     let vote_average: Double
 }
 
-let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjdiMzkwZjAyZTczY2YzZWYzZGI5MzgzODg4NjZiNSIsIm5iZiI6MTc3MDI4NTM4Ny43NTQsInN1YiI6IjY5ODQ2OTRiZjhmNWZiZWZkYTM2MzM4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMzzldr2Zq6ukHp5HYhJru5njntRL-_NpKCNTUNR9zI"
+private let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjdiMzkwZjAyZTczY2YzZWYzZGI5MzgzODg4NjZiNSIsIm5iZiI6MTc3MDI4NTM4Ny43NTQsInN1YiI6IjY5ODQ2OTRiZjhmNWZiZWZkYTM2MzM4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMzzldr2Zq6ukHp5HYhJru5njntRL-_NpKCNTUNR9zI"
 
-func fetchMovieAPI() async throws -> [Movie] {
+public func fetchMovieAPI() async throws -> [Movie] {
     guard let url = URL(string: "https://api.themoviedb.org/3/discover/movie") else {
         return []
     }

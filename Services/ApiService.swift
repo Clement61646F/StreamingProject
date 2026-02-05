@@ -19,3 +19,12 @@ func fetchMovieAPI() async throws -> [Movie] {
     let decoded = try JSONDecoder().decode(MovieResponse.self, from: data)
     return decoded.results
 }
+
+Task {
+    do {
+        let movies = try await fetchMovieAPI()
+        print(movies)
+    } catch {
+        print(error)
+    }
+}

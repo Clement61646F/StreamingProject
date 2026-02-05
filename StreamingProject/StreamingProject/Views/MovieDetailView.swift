@@ -14,7 +14,7 @@ struct MovieDetailView: View {
 
                 // Image du film en grand
                 AsyncImage(
-                    url: URL(string: "https://image.tmdb.org/t/p/w500\(film.getImage)")
+                    url: film.posterURL
                 ) { image in
                     image
                         .resizable()

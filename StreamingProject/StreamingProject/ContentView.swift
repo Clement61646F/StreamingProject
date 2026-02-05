@@ -5,7 +5,7 @@ struct ContentView: View {
 
     var body: some View {
         if authVM.isAuthenticated {
-            MovieDetailView(authVM: authVM)
+            MovieListView(authVM: authVM)
         } else {
             LoginView(authVM: authVM)
         }

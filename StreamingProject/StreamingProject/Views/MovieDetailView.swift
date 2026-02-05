@@ -1,77 +1,57 @@
 import SwiftUI
 import SwiftData
 
-struct MovieDetailView : View {
+struct MovieDetailView: View {
+    // Variable en entrée de type Film (c'est une classe que j'ai faite)
+    let film: Film
+
     @ObservedObject var authVM: AuthViewModel
     @StateObject private var vm = MovieViewModel()
 
     var body: some View {
-        NavigationView {
-            Group {
-                if vm.isLoading {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+
+                // Image du film en grand
+                AsyncImage(
+                    url: URL(string: "https://image.tmdb.org/t/p/w500\(film.getImage)")
+                ) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
                     ProgressView()
-                } else if let error = vm.errorMessage {
-                    Text(error)
-                } else {
-                    List(vm.movies) { movie in
-                        HStack(alignment: .top, spacing: 12) {
-
-                            AsyncImage(url: movie.posterURL) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(width: 80, height: 120)
-
-                                case .success(let image):
-                                    ZStack(alignment: .bottomTrailing) {
-
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 80, height: 120)
-                                            .clipped()
-                                            .cornerRadius(8)
-
-                                        Button {
-                                            print(movie.id)
-                                        } label: {
-                                            Image(systemName: "heart.fill")
-                                                .foregroundColor(.white)
-                                                .padding(8)
-                                                .background(Color.black.opacity(0.7))
-                                                .clipShape(Circle())
-                                        }
-                                        .padding(6)
-                                    }
-
-                                case .failure:
-                                    Image(systemName: "photo")
-                                        .frame(width: 80, height: 120)
-
-                                @unknown default:
-                                    EmptyView()
-                                }
-                            }
-
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text(movie.title)
-                                    .font(.headline)
-
-                                Text(movie.overview)
-                                    .font(.caption)
-                                    .lineLimit(3)
-                            }
-                        }
-                        .padding()
-                    }
-
                 }
+                .frame(height: 300)
+                .clipped()
+
+                // Titre du film
+                Text(film.getTitle)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.horizontal)
+
+                // Description du film
+                Text(film.getDescription)
+                    .font(.body)
+                    .padding(.horizontal)
+
+                // Bouton Ajouter aux favoris
+                Button(action: {
+                    print(film)
+                }) {
+                    Text("Ajouter aux favoris")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal)
+
             }
-            .navigationTitle("Movies")
         }
-        .task {
-            await vm.fetchMovies()
-        }
+        .navigationTitle("Détail du film")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
-

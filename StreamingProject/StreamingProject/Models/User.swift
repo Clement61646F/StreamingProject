@@ -1,7 +1,7 @@
 public class User: Identifiable {
     let Id: Int
-    let username: String
-    let email: String
+    var username: String
+    var email: String
     var favorites: Favorite?
 
     init(id: Int, username: String, email: String) {

@@ -21,6 +21,4 @@ class User {
     public func getPassword() -> String { return self.password }
     
     public func getFilms() -> Favorite? { return self.favorites ?? nil }
-    
-    public func truc() -> String { return self.username }
 }

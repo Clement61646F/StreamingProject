@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct MovieDetailView: View {
-    // Variable en entrée de type Film (c'est une classe que j'ai faite)
+    // Variable en entrée de type Film
     let film: Film
 
     @ObservedObject var authVM: AuthViewModel
@@ -26,7 +26,7 @@ struct MovieDetailView: View {
                 .clipped()
 
                 // Titre du film
-                Text(film.getTitle)
+                Text(film.getTitle())
                     .font(.title)
                     .fontWeight(.bold)
                     .padding(.horizontal)
@@ -51,7 +51,7 @@ struct MovieDetailView: View {
 
             }
         }
-        .navigationTitle("Détail du film")
+        .navigationTitle("Détail de : \(film.getTitle())")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -1,23 +1,38 @@
 import Foundation
 
-struct MovieResponse : Decodable {
+struct MovieResponse: Decodable {
     let results: [Movie]
 }
 
 struct Movie: Codable {
     let id: Int
-    let original_language : String
-    let original_title : String
-    let overview : String
-    let title : String
-    let vote_average : Double
+    let original_language: String
+    let original_title: String
+    let overview: String
+    let title: String
+    let vote_average: Double
 }
 
-let apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjdiMzkwZjAyZTczY2YzZWYzZGI5MzgzODg4NjZiNSIsIm5iZiI6MTc3MDI4NTM4Ny43NTQsInN1YiI6IjY5ODQ2OTRiZjhmNWZiZWZkYTM2MzM4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMzzldr2Zq6ukHp5HYhJru5njntRL-_NpKCNTUNR9zI"
+let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjdiMzkwZjAyZTczY2YzZWYzZGI5MzgzODg4NjZiNSIsIm5iZiI6MTc3MDI4NTM4Ny43NTQsInN1YiI6IjY5ODQ2OTRiZjhmNWZiZWZkYTM2MzM4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMzzldr2Zq6ukHp5HYhJru5njntRL-_NpKCNTUNR9zI"
 
 func fetchMovieAPI() async throws -> [Movie] {
-    guard let url = URL(string : "https://api.themoviedb.org/3/discover/movie?api_key=\(apiKey)") else { return [] }
-    let (data, response) = try await URLSession.shared.data(from : url)
+    guard let url = URL(string: "https://api.themoviedb.org/3/discover/movie") else {
+        return []
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+    let (data, response) = try await URLSession.shared.data(for: request)
+
+    guard let httpResponse = response as? HTTPURLResponse,
+          200..<300 ~= httpResponse.statusCode else {
+        throw URLError(.badServerResponse)
+    }
+
     let decoded = try JSONDecoder().decode(MovieResponse.self, from: data)
     return decoded.results
 }
+

@@ -1,4 +1,6 @@
-struct MoviesResponse : DECodable {
+import Foundation
+
+struct MovieResponse : Decodable {
     let results: [Movie]
 }
 
@@ -14,17 +16,8 @@ struct Movie: Codable {
 let apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjdiMzkwZjAyZTczY2YzZWYzZGI5MzgzODg4NjZiNSIsIm5iZiI6MTc3MDI4NTM4Ny43NTQsInN1YiI6IjY5ODQ2OTRiZjhmNWZiZWZkYTM2MzM4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMzzldr2Zq6ukHp5HYhJru5njntRL-_NpKCNTUNR9zI"
 
 func fetchMovieAPI() async throws -> [Movie] {
-    let url = URL(string : "https://api.themoviedb.org/3/discover/movie?api_key=\(apiKey)")
+    guard let url = URL(string : "https://api.themoviedb.org/3/discover/movie?api_key=\(apiKey)") else { return [] }
     let (data, response) = try await URLSession.shared.data(from : url)
     let decoded = try JSONDecoder().decode(MovieResponse.self, from: data)
     return decoded.results
-}
-
-Task {
-    do {
-        let movies = try await fetchMovieAPI()
-        print(movies)
-    } catch {
-        print(error)
-    }
 }

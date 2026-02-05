@@ -1,4 +1,4 @@
-class Film {
+public class Film {
     private var Id : Int
     private var title : String
     private var description : String

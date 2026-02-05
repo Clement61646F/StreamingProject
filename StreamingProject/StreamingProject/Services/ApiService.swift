@@ -4,14 +4,23 @@ public struct MovieResponse: Decodable {
     let results: [Movie]
 }
 
-public struct Movie: Codable {
-    let id: Int
+public struct Movie: Codable, Identifiable {
+    public let id: Int
     let original_language: String
     let original_title: String
     let overview: String
     let title: String
+    let poster_path: String?
     let vote_average: Double
 }
+
+extension Movie {
+    var posterURL: URL? {
+        guard let poster_path else { return nil }
+        return URL(string: "https://image.tmdb.org/t/p/w500\(poster_path)")
+    }
+}
+
 
 private let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjdiMzkwZjAyZTczY2YzZWYzZGI5MzgzODg4NjZiNSIsIm5iZiI6MTc3MDI4NTM4Ny43NTQsInN1YiI6IjY5ODQ2OTRiZjhmNWZiZWZkYTM2MzM4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMzzldr2Zq6ukHp5HYhJru5njntRL-_NpKCNTUNR9zI"
 

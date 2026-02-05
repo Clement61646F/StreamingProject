@@ -1,4 +1,4 @@
-class Favorite {
+public class Favorite {
     private var filmsList : [Film] = []
     
     public func getFilms() -> Array<Film> { return self.filmsList }
